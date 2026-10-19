@@ -40,8 +40,8 @@ function resetGame() {
   gameStatus = "ready";
   firstClick = true;
   elapsedSeconds = 0;
-  timerElement.textContent = "0";
-  mineCounterElement.textContent = String(difficulty.mines);
+  timerElement.textContent = "000";
+  mineCounterElement.textContent = formatCounter(difficulty.mines);
   messageElement.textContent = "첫 칸을 열어 게임을 시작하세요.";
   messageElement.className = "game-message";
   restartButton.textContent = "🙂";
@@ -52,6 +52,10 @@ function resetGame() {
     `${difficulty.rows}x${difficulty.columns} ${difficulty.label} 지뢰찾기 게임 보드`,
   );
   renderBoard();
+}
+
+function formatCounter(value) {
+  return String(Math.max(0, value)).padStart(3, "0");
 }
 
 function renderBoard() {
@@ -76,6 +80,7 @@ function renderBoard() {
           cellElement.textContent = String(cell.adjacentMines);
           cellElement.classList.add(`number-${cell.adjacentMines}`);
         }
+
       } else if (cell.flagged) {
         cellElement.textContent = "🚩";
         cellElement.classList.add("is-flagged");
@@ -145,7 +150,7 @@ function startTimer() {
   if (timerId !== null) return;
   timerId = window.setInterval(() => {
     elapsedSeconds += 1;
-    timerElement.textContent = String(elapsedSeconds);
+    timerElement.textContent = formatCounter(elapsedSeconds);
   }, 1000);
 }
 
@@ -244,7 +249,7 @@ function handleRightClick(row, col) {
     flagCount += 1;
   }
 
-  mineCounterElement.textContent = String(difficulty.mines - flagCount);
+  mineCounterElement.textContent = formatCounter(difficulty.mines - flagCount);
   renderBoard();
 }
 
