@@ -14,7 +14,17 @@
         <p class="eyebrow">CLASSIC MINESWEEPER</p>
         <h1>💣 지뢰찾기</h1>
       </div>
-      <button id="restart-button" class="restart-button" type="button" aria-label="새 게임 시작">🙂</button>
+      <div class="header-actions">
+        <label class="difficulty-picker">
+          <span>난이도</span>
+          <select id="difficulty-select" aria-label="난이도 선택">
+            <option value="beginner">초급</option>
+            <option value="intermediate">중급</option>
+            <option value="expert">고급</option>
+          </select>
+        </label>
+        <button id="restart-button" class="restart-button" type="button" aria-label="새 게임 시작">🙂</button>
+      </div>
     </header>
 
     <section class="status-panel" aria-label="게임 상태">
@@ -29,7 +39,9 @@
       </div>
     </section>
 
-    <div id="game-board" class="game-board" role="grid" aria-label="9x9 지뢰찾기 게임 보드"></div>
+    <div class="board-shell">
+      <div id="game-board" class="game-board" role="grid" aria-label="9x9 지뢰찾기 게임 보드"></div>
+    </div>
     <p class="help-text">좌클릭: 칸 열기 · 우클릭: 깃발 꽂기/해제</p>
   </main>
 </body>

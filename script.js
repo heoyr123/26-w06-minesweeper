@@ -1,12 +1,17 @@
-const BOARD_SIZE = 9;
-const MINE_COUNT = 10;
+const DIFFICULTIES = {
+  beginner: { label: "초급", rows: 9, columns: 9, mines: 10, cellSize: 42 },
+  intermediate: { label: "중급", rows: 16, columns: 16, mines: 40, cellSize: 30 },
+  expert: { label: "고급", rows: 16, columns: 30, mines: 99, cellSize: 26 },
+};
 
 const boardElement = document.querySelector("#game-board");
 const mineCounterElement = document.querySelector("#mine-counter");
 const timerElement = document.querySelector("#timer");
 const messageElement = document.querySelector("#game-message");
 const restartButton = document.querySelector("#restart-button");
+const difficultySelect = document.querySelector("#difficulty-select");
 
+let difficulty = DIFFICULTIES.beginner;
 let board = [];
 let flagCount = 0;
 let revealedCount = 0;
@@ -16,8 +21,8 @@ let elapsedSeconds = 0;
 let timerId = null;
 
 function createEmptyBoard() {
-  return Array.from({ length: BOARD_SIZE }, () =>
-    Array.from({ length: BOARD_SIZE }, () => ({
+  return Array.from({ length: difficulty.rows }, () =>
+    Array.from({ length: difficulty.columns }, () => ({
       mine: false,
       revealed: false,
       flagged: false,
@@ -36,10 +41,16 @@ function resetGame() {
   firstClick = true;
   elapsedSeconds = 0;
   timerElement.textContent = "0";
-  mineCounterElement.textContent = String(MINE_COUNT);
+  mineCounterElement.textContent = String(difficulty.mines);
   messageElement.textContent = "첫 칸을 열어 게임을 시작하세요.";
   messageElement.className = "game-message";
   restartButton.textContent = "🙂";
+  boardElement.style.setProperty("--board-columns", difficulty.columns);
+  boardElement.style.setProperty("--cell-size", `${difficulty.cellSize}px`);
+  boardElement.setAttribute(
+    "aria-label",
+    `${difficulty.rows}x${difficulty.columns} ${difficulty.label} 지뢰찾기 게임 보드`,
+  );
   renderBoard();
 }
 
@@ -93,9 +104,9 @@ function getNeighbors(row, col) {
       const neighborCol = col + colOffset;
       if (
         neighborRow >= 0 &&
-        neighborRow < BOARD_SIZE &&
+        neighborRow < difficulty.rows &&
         neighborCol >= 0 &&
-        neighborCol < BOARD_SIZE
+        neighborCol < difficulty.columns
       ) {
         neighbors.push([neighborRow, neighborCol]);
       }
@@ -106,8 +117,8 @@ function getNeighbors(row, col) {
 
 function placeMines(safeRow, safeCol) {
   const candidates = [];
-  for (let row = 0; row < BOARD_SIZE; row += 1) {
-    for (let col = 0; col < BOARD_SIZE; col += 1) {
+  for (let row = 0; row < difficulty.rows; row += 1) {
+    for (let col = 0; col < difficulty.columns; col += 1) {
       if (row !== safeRow || col !== safeCol) candidates.push([row, col]);
     }
   }
@@ -117,12 +128,12 @@ function placeMines(safeRow, safeCol) {
     [candidates[index], candidates[randomIndex]] = [candidates[randomIndex], candidates[index]];
   }
 
-  candidates.slice(0, MINE_COUNT).forEach(([row, col]) => {
+  candidates.slice(0, difficulty.mines).forEach(([row, col]) => {
     board[row][col].mine = true;
   });
 
-  for (let row = 0; row < BOARD_SIZE; row += 1) {
-    for (let col = 0; col < BOARD_SIZE; col += 1) {
+  for (let row = 0; row < difficulty.rows; row += 1) {
+    for (let col = 0; col < difficulty.columns; col += 1) {
       board[row][col].adjacentMines = getNeighbors(row, col)
         .filter(([neighborRow, neighborCol]) => board[neighborRow][neighborCol].mine)
         .length;
@@ -179,7 +190,7 @@ function revealMines() {
 }
 
 function checkWin() {
-  return revealedCount === BOARD_SIZE * BOARD_SIZE - MINE_COUNT;
+  return revealedCount === difficulty.rows * difficulty.columns - difficulty.mines;
 }
 
 function finishGame(status) {
@@ -228,12 +239,12 @@ function handleRightClick(row, col) {
   if (cell.flagged) {
     cell.flagged = false;
     flagCount -= 1;
-  } else if (flagCount < MINE_COUNT) {
+  } else if (flagCount < difficulty.mines) {
     cell.flagged = true;
     flagCount += 1;
   }
 
-  mineCounterElement.textContent = String(MINE_COUNT - flagCount);
+  mineCounterElement.textContent = String(difficulty.mines - flagCount);
   renderBoard();
 }
 
@@ -251,5 +262,9 @@ boardElement.addEventListener("contextmenu", (event) => {
 });
 
 restartButton.addEventListener("click", resetGame);
+difficultySelect.addEventListener("change", (event) => {
+  difficulty = DIFFICULTIES[event.target.value];
+  resetGame();
+});
 
 resetGame();
