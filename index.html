@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="9x9 격자에서 지뢰 10개를 찾는 클래식 지뢰찾기 게임"
+    />
+    <title>지뢰찾기 | Minefield</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">CLASSIC PUZZLE / 09 × 09</p>
+          <h1>Mine<span>field</span></h1>
+          <p class="subtitle">차분하게 숫자를 읽고, 지뢰를 피해 모든 칸을 열어보세요.</p>
+        </div>
+        <div class="hero-mark" aria-hidden="true">✦</div>
+      </header>
+
+      <section class="game-card" aria-label="지뢰찾기 게임">
+        <div class="status-bar">
+          <div class="stat">
+            <span class="stat-label">남은 지뢰</span>
+            <strong id="mine-count">10</strong>
+          </div>
+          <button id="reset-button" class="reset-button" type="button" aria-label="새 게임 시작">
+            <span aria-hidden="true">↻</span> 새 게임
+          </button>
+          <div class="stat stat-right">
+            <span class="stat-label">경과 시간</span>
+            <strong id="timer">000</strong>
+          </div>
+        </div>
+
+        <div class="board-wrap">
+          <div id="board" class="board" role="grid" aria-label="9 곱하기 9 지뢰찾기 격자"></div>
+          <div id="result-message" class="result-message" role="status" aria-live="polite"></div>
+        </div>
+
+        <div class="instructions">
+          <span><b class="mouse-icon">◉</b> 좌클릭으로 칸 열기</span>
+          <span><b class="flag-icon">⚑</b> 우클릭으로 깃발</span>
+          <span><b class="chord-icon">✣</b> 휠 / 좌우 동시 클릭으로 주변 열기</span>
+        </div>
+      </section>
+
+      <footer>
+        <span>MINESWEEPER / 2026</span>
+        <span class="footer-dot">●</span>
+        <span>LUCK FAVORS THE CAREFUL</span>
+      </footer>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
