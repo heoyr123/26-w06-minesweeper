@@ -66,3 +66,6 @@ python -m http.server 8000
 - 버튼, 상태 메시지, `aria-label`, `aria-live`를 활용한 기본 접근성 지원
 
 자세한 실습 절차와 브랜치 흐름은 [guide.md](./guide.md)를 참고하세요.
+
+## freedom과 prd 비교 소감 
+기획 없이 빠르게 만들어 재미있었지만 구조 확장이 아쉬웠던 freeform과 달리, PRD는 철저한 사전 설계 덕분에 완성도 높은 구현이 가능했습니다. 
